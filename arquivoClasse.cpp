@@ -1,12 +1,20 @@
 #include <iostream>
-#include "arquivoClasse.h"
-#include "leClasse.h"
-#include "tipos.h"
+#include "arquivoClasse.hpp"
+#include "leClasse.hpp"
+#include "tipos.hpp"
 using namespace std;
+
+/** \file arquivoClasse.cpp
+ * Arquivo referente à classe arquivoClasse, que possui mesma estrutura de um arquivo .class.
+ * Métodos get e set para todos seus campos.
+ */
 
 ArquivoClasse::ArquivoClasse() {}
 
-// Construtor
+/**
+Construtor, utiliza os métodos set para setar seus atributos.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 ArquivoClasse::ArquivoClasse(FILE * fp) {
     this->setMagicNumber(fp);
     this->setMinorVersion(fp);
@@ -26,27 +34,53 @@ ArquivoClasse::ArquivoClasse(FILE * fp) {
     this->setAttributes(fp);
 }
 
+/**
+Seta o valor do magicNumber a partir da leitura do arquivo .class com o método readU4.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
+
 void ArquivoClasse::setMagicNumber(FILE * fp) {
     LeClasse magic_Number;
     
     magicNumber = magic_Number.readU4(fp);
 }
 
+/**
+Seta o valor do minorVersion a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 
 void ArquivoClasse::setMinorVersion(FILE * fp) {
     LeClasse minor_Version;
     minorVersion = minor_Version.readU2(fp);
 }
 
+/**
+Seta o valor do majorVersion a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
+
 void ArquivoClasse::setMajorVersion(FILE * fp) {
     LeClasse major_Version;
     majorVersion = major_Version.readU2(fp);
 }
 
+/**
+Seta o valor do constantPoolSize a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
+
 void ArquivoClasse::setConstantPoolSize(FILE * fp) {
     LeClasse cpSize;
     constantPoolSize = cpSize.readU2(fp);
 }
+
+/**
+Seta a constantPool com estrutura cp_info a partir de valores obtidos da leitura do arquivo .class. Utiliza constantPoolSize para saber
+o número de entradas da tabela, o método readU1 lê a tag e dependendo da tag utiliza um método get
+para a info apropriada.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 
 void ArquivoClasse::setConstantPool(FILE * fp) {
     int cpSize = constantPoolSize - 1;
@@ -126,26 +160,51 @@ void ArquivoClasse::setConstantPool(FILE * fp) {
     }
 }
 
+/**
+Seta o valor de accessFlags a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 
 void ArquivoClasse::setAccessFlags(FILE * fp) {
     LeClasse flags;
     accessFlags = flags.readU2(fp);
 }
 
+/**
+Seta o valor de thisClass a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
+
 void ArquivoClasse::setThisClass(FILE * fp) {
     LeClasse this_Class;
     thisClass = this_Class.readU2(fp);
 }
+
+/**
+Seta o valor de superClass a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 
 void ArquivoClasse::setSuperClass(FILE * fp) {
     LeClasse super_Class;
     superClass = super_Class.readU2(fp);
 }
 
+/**
+Seta o valor de interfacesCount a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
+
 void ArquivoClasse::setInterfacesCount(FILE * fp) {
     LeClasse interfaces_Count;
     interfacesCount = interfaces_Count.readU2(fp);
 }
+
+/**
+Seta a tabela de interfaces a partir de valores obtidos da leitura do arquivo .class. Utiliza interfacesCount para saber
+o número de entradas da tabela, o método readU2 lê o valor.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 
 void ArquivoClasse::setInterfaces(FILE * fp) {
     int contador = interfacesCount;
@@ -155,10 +214,23 @@ void ArquivoClasse::setInterfaces(FILE * fp) {
     }
 }
 
+/**
+Seta o valor de fieldsCount a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
+
 void ArquivoClasse::setFieldsCount(FILE * fp) {
     LeClasse fields_count;
     fieldsCount = fields_count.readU2(fp);
 }
+
+/**
+Seta tabela de fields com estruturas field_info a partir de valores obtidos da leitura do arquivo .class. Utiliza fieldsCount para saber
+o número de entradas da tabela, o método readU2 lê as informações de field_info access_flags, name_index, descriptor_index e 
+attributtes_count, o último é utilizado para saber o número de atributos do field, cada atributo tem estrutura attribute_info.
+ Utiliza o malloc para alocar memória com o tamanho adequado, para cada entrada de atributos utiliza o método getAttributeInfo para pegar as informações dos atributos.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 
 void ArquivoClasse::setFields(FILE * fp) {
     int contador = fieldsCount;
@@ -179,11 +251,23 @@ void ArquivoClasse::setFields(FILE * fp) {
     }
 }
 
+/**
+Seta o valor de methodsCount a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
+
 void ArquivoClasse::setMethodsCount(FILE * fp) {
     LeClasse methods_count;
     methodsCount = methods_count.readU2(fp);
 }
 
+/**
+Seta tabela de methods com estruturas method_info a partir de valores obtidos da leitura do arquivo .class. Utiliza methodsCount para saber
+o número de entradas da tabela, o método readU2 lê as informações de method_info access_flags, name_index, descriptor_index e 
+attributtes_count, o último é utilizado para saber o número de atributos de method, cada atributo tem estrutura attribute_info. 
+Utiliza o malloc para alocar memória com o tamanho adequado, para cada entrada de atributos utiliza o método getAttributeInfo para pegar as informações dos atributos.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 
 void ArquivoClasse::setMethods(FILE * fp) {
     int contador = methodsCount;
@@ -203,10 +287,21 @@ void ArquivoClasse::setMethods(FILE * fp) {
     }
 }
 
+/**
+Seta o valor de AttributesCount a partir da leitura do arquivo .class com o método readU2.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
+
 void ArquivoClasse::setAttributesCount(FILE * fp) {
     LeClasse attributes_count;
     attributesCount = attributes_count.readU2(fp);
 }
+
+/**
+Seta tabela de attributes com estruturas attribute_info a partir de valores obtidos da leitura do arquivo .class. Utiliza attributesCount para saber
+o número de entradas da tabela, utiliza o método getAttributeInfo para pegar as informações dos atributos.
+@param *fp ponteiro para o arquivo .class sendo lido.
+*/
 
 void ArquivoClasse::setAttributes(FILE * fp) {
     int contador = attributesCount;
@@ -215,65 +310,129 @@ void ArquivoClasse::setAttributes(FILE * fp) {
     }
 }
 
+/**
+Retorna o valor de magicNumber.
+*/
+
 u4 ArquivoClasse::getMagicNumber() {
     return magicNumber;
 }
+
+/**
+Retorna o valor de minorVersion.
+*/
 
 u2 ArquivoClasse::getMinorVersion() {
     return minorVersion;
 }
 
+/**
+Retorna o valor de majorVersion.
+*/
+
 u2 ArquivoClasse::getMajorVersion() {
     return majorVersion;
 }
+
+/**
+Retorna o valor de constantPoolSize.
+*/
 
 u2 ArquivoClasse::getConstantPoolSize() {
     return constantPoolSize;
 }
 
+/**
+Retorna a tabela(vector) constantPool.
+*/
+
 vector<cp_info> ArquivoClasse::getConstantPool() {
     return constantPool;
 }
+
+/**
+Retorna o valor de acessFlags.
+*/
 
 u2 ArquivoClasse::getAccessFlags() {
     return accessFlags;
 }
 
+/**
+Retorna o valor de thisClass.
+*/
+
 u2 ArquivoClasse::getThisClass() {
     return thisClass;
 }
+
+/**
+Retorna o valor de superClass.
+*/
 
 u2 ArquivoClasse::getSuperClass() {
     return superClass;
 }
 
+/**
+Retorna o valor de interfacesCount.
+*/
+
 u2 ArquivoClasse::getInterfacesCount() {
     return interfacesCount;
 }
+
+/**
+Retorna a tabela(vector) interfaces.
+*/
 
 vector<u2> ArquivoClasse::getInterfaces() {
     return interfaces;
 }
 
+/**
+Retorna o valor de fieldsCount.
+*/
+
 u2 ArquivoClasse::getFieldsCount() {
     return fieldsCount;
 }
+
+/**
+Retorna a tabela(vector) fields.
+*/
 
 vector<field_info> ArquivoClasse::getFields() {
     return fields;
 }
 
+/**
+Retorna o valor de methodsCount.
+*/
+
 u2 ArquivoClasse::getMethodsCount() {
     return methodsCount;
 }
+
+/**
+Retorna a tabela(vector) methods.
+*/
 
 vector<method_info> ArquivoClasse::getMethods() {
     return methods;
 }
 
+/**
+Retorna o valor de attributesCount.
+*/
+
 u2 ArquivoClasse::getAttributesCount(){
     return attributesCount;
 }
+
+/**
+Retorna a tabela(vector) attributes.
+*/
 
 vector<attribute_info> ArquivoClasse::getAttributes(){
     return attributes;

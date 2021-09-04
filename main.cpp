@@ -9,8 +9,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "arquivoClasse.h"
-#include "leClasse.h"
+#include "arquivoClasse.hpp"
+#include "leClasse.hpp"
 using namespace std;
 
 
