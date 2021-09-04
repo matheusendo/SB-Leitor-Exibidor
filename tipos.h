@@ -1,11 +1,14 @@
 #ifndef TIPOS_H
 #define TIPOS_H
 
-#include <stdint.h>
+#include <iostream>
+#include <vector>
 // Tipos de representação de dados da classe
 typedef uint8_t u1;
 typedef uint16_t u2;
 typedef uint32_t u4;
+
+using namespace std;
 
 struct CONSTANT_Class_info {
 	u2 name_index;
@@ -58,21 +61,18 @@ struct CONSTANT_Utf8_info {
     u1 *bytes;
 };
 
-struct cp_info {
-    u1 tag;
-    union {
-        CONSTANT_Class_info class_info;
-        CONSTANT_Fieldref_info fieldref_info;
-        CONSTANT_Methodref_info methodref_info;
-        CONSTANT_InterfaceMethodref_info interfaceMethodref_info;
-        CONSTANT_String_info string_info;
-        CONSTANT_Integer_info integer_info;
-        CONSTANT_Float_info float_info;
-        CONSTANT_Long_info long_info;
-        CONSTANT_Double_info double_info;
-        CONSTANT_NameAndType_info nameAndType_info;
-        CONSTANT_Utf8_info utf8_info;
-    } info;
+struct CONSTANT_MethodHandle_info{
+    u1 reference_kind;
+    u2 reference_index;
+};
+
+struct CONSTANT_MethodType_info{
+    u2 descriptor_index;
+};
+
+struct CONSTANT_InvokeDynamic_info{
+    u2 bootstrap_method_attr_index;
+    u2 name_and_type_index;
 };
 
 struct ConstantValue_attribute {
@@ -85,6 +85,12 @@ struct ExceptionTable {
     u2 handler_pc;
     u2 catch_type;
 };
+
+struct Deprecated_attribute {
+    // vazio
+};
+
+struct attribute_info;
 
 struct Code_attribute {
 	u2 max_stack;
@@ -142,11 +148,7 @@ struct LocalVariableTable {
 
 struct LocalVariableTable_attribute {
     u2 local_variable_table_length;
-    LocalVariableTable *localVariableTable;
-};
-
-struct Deprecated_attribute {
-    // vazio
+    LocalVariableTable *local_variable_table;
 };
 
 struct attribute_info {
@@ -179,6 +181,26 @@ struct method_info {
     u2 descriptor_index;
     u2 attributes_count;
     attribute_info *attributes;
+};
+
+struct cp_info {
+    u1 tag;
+    union {
+        CONSTANT_Class_info class_info;
+        CONSTANT_Fieldref_info fieldref_info;
+        CONSTANT_Methodref_info methodref_info;
+        CONSTANT_InterfaceMethodref_info interfaceMethodref_info;
+        CONSTANT_String_info string_info;
+        CONSTANT_Integer_info integer_info;
+        CONSTANT_Float_info float_info;
+        CONSTANT_Long_info long_info;
+        CONSTANT_Double_info double_info;
+        CONSTANT_NameAndType_info nameAndType_info;
+        CONSTANT_Utf8_info utf8_info;
+        CONSTANT_MethodHandle_info methodHandle_info;
+        CONSTANT_MethodType_info methodType_info;
+        CONSTANT_InvokeDynamic_info invokeDynamic_info;
+    } info;
 };
 
 #endif
