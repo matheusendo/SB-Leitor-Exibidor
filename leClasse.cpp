@@ -57,7 +57,8 @@ CONSTANT_Utf8_info LeClasse::getUtf8Info(FILE *fp){
     CONSTANT_Utf8_info toReturn;
     toReturn.length = readU2(fp);
     int contador = toReturn.length;
-    toReturn.bytes = (u1*) malloc(contador * sizeof(u1));
+    toReturn.bytes = (u1*) malloc(contador * sizeof(u1) );
+    
     for (int i = 0; i < contador; i++) {
         toReturn.bytes[i] = readU1(fp);
     }
@@ -244,6 +245,7 @@ Para cada byte faz um push.back na string com o byte lido.
 string LeClasse::getUtf8(cp_info cpInfo){
     string toReturn;
     int contador = cpInfo.info.utf8_info.length;
+    
     for (int i = 0 ; i < contador; i++){
         toReturn.push_back(cpInfo.info.utf8_info.bytes[i]);
     }
@@ -309,7 +311,9 @@ attribute_info LeClasse::getAttributeInfo(FILE *fp, vector<cp_info> constantPool
         attributeInfo.info.constantValue_info = LeClasse().getConstantValueAttribute(fp);
 
     } else {
-        cout << "Arquivo .class possui uma um atributo nao implementado." << endl;
+        void * trash = (void*)malloc(attributeInfo.attribute_length*sizeof(uint8_t));
+        fread(trash, attributeInfo.attribute_length, 1, fp);
+        free(trash);
         
     }
     return attributeInfo;
@@ -350,6 +354,7 @@ Code_attribute LeClasse::getCodeAttribute(FILE *fp, vector<cp_info> cp){
     contador = toReturn.attributes_count;
     toReturn.attributes = (attribute_info*) malloc(contador * sizeof(attribute_info));
     for (int i = 0; i < contador; i++) {
+        
         toReturn.attributes[i] = getAttributeInfo(fp,cp);
     }
     

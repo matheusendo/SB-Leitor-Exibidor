@@ -89,10 +89,12 @@ void ArquivoClasse::setConstantPool(FILE * fp) {
         uint8_t tag = LeClasse().readU1(fp);
         cp_info cpInfo;
         cpInfo.tag = tag;
+        string str;
         switch(tag){
             case 1:
                 cpInfo.info.utf8_info = LeClasse().getUtf8Info(fp);
                 constantPool.push_back(cpInfo);
+                
             break;
             case 3:
                 cpInfo.info.integer_info = LeClasse().getIntegerInfo(fp);
