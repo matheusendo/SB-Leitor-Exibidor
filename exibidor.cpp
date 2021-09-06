@@ -181,10 +181,10 @@ void Exibidor::printConstantPool(ArquivoClasse arq_classe, FILE *fp){
             fprintf(fp,"\t\t | String: %s\n", str.c_str());
         }
         else if(cpInfo.tag == 3){
-            str = getStringConstantPool(cpInfo, cp);
             fprintf(fp,"\t [%d] CONSTANT_Integer_info\n", i+1);
             fprintf(fp,"\t\t | Bytes: 0x%.8X\n", cpInfo.info.integer_info.bytes);
-            fprintf(fp,"\t\t | Integer: %d\n", stoi(str));
+            int d = *(int*)(&cpInfo.info.float_info.bytes);
+            fprintf(fp,"\t\t | Integer: %d\n", d);
         }
         else if(cpInfo.tag == 4){
             fprintf(fp,"\t [%d] CONSTANT_Float_info\n", i+1);

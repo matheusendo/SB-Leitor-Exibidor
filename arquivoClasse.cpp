@@ -43,6 +43,10 @@ void ArquivoClasse::setMagicNumber(FILE * fp) {
     LeClasse magic_Number;
     
     magicNumber = magic_Number.readU4(fp);
+    if(magicNumber != 0xCAFEBABE){
+        cout<<"MagicNumber invalido"<<endl;
+        exit(1);
+    }
 }
 
 /**
