@@ -49,39 +49,6 @@ string Exibidor::getAccessFlags(u2 accessFlags){
     return toReturn;
 }
 
-string Exibidor::getMajorVersionAjustado(u2 majorVersion){
-    switch (majorVersion) {
-        case 46:
-            return "1.2";
-        case 47:
-            return "1.3";
-        case 48:
-            return "1.4";
-        case 49:
-            return "1.5";
-        case 50:
-            return "1.6";
-        case 51:
-            return "1.7";
-        case 52:
-            return "1.8";
-        case 53:
-            return "1.9";
-        case 54:
-            return "1.10";
-        case 55:
-            return "1.11";
-        case 56:
-            return "1.12";
-        case 57:
-            return "1.13";
-        case 58:
-            return "1.14";
-        default:
-            return "";
-    }
-}
-
 string Exibidor::getStringConstantPool(cp_info cpInfo, vector<cp_info> constantPool) {
     if (cpInfo.tag == 1){
         string toReturn;
@@ -142,7 +109,7 @@ void Exibidor::printGeneralInfo(ArquivoClasse arq_classe, FILE *fp) {
 
     fprintf(fp,"\t Magic Number: \t0x%.8X\n", arq_classe.getMagicNumber());
     fprintf(fp,"\t Minor Version: \t%hu\n", arq_classe.getMinorVersion());
-    fprintf(fp,"\t Major Version: \t%hu [%s]\n", arq_classe.getMajorVersion(),this->getMajorVersionAjustado(arq_classe.getMajorVersion()).c_str());
+    fprintf(fp,"\t Major Version: \t%hu [1.%d]\n", arq_classe.getMajorVersion(),arq_classe.getMajorVersion()-44);
     fprintf(fp,"\t Constant Pool Count: \t %hu\n", arq_classe.getConstantPoolSize());
     fprintf(fp,"\t Access Flags: \t0x%.4X [%s]\n", arq_classe.getAccessFlags(),getAccessFlags(arq_classe.getAccessFlags()).c_str());
 
