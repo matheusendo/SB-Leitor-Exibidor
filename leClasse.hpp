@@ -8,6 +8,7 @@ class LeClasse {
 
 public:
     LeClasse();
+    bool testEndian();
     u1 readU1(FILE *file);
     u2 readU2(FILE *file);
     u4 readU4(FILE *file);

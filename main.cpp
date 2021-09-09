@@ -27,10 +27,10 @@ int main(int argc, char *argv[]){
     
     ArquivoClasse * classe = new ArquivoClasse(fp);
     
-    FILE *fp1 = fopen(saida, "rb+");
-    if(fp1 == NULL){
-        fp1 = fopen(saida, "wb");
-    }
+    FILE *fp1 = fopen(saida, "wb+");
+    // if(fp1 == NULL){
+    //     fp1 = fopen(saida, "wb");
+    // }
     Exibidor * exibidor = new Exibidor(*classe,fp1);
     fclose(fp);
     fclose(fp1);

@@ -11,7 +11,14 @@ Lê 1 byte do arquivo .class.
 @param *fp ponteiro para o arquivo .class sendo lido.
 @return byte lido.
 */
-
+bool LeClasse::testEndian(){
+    unsigned int i = 1; 
+    char *c = (char*)&i; 
+    if (*c) 
+        return true; 
+    else
+        return false; 
+}
 u1 LeClasse::readU1(FILE *fp) {
     u1 toReturn = 0;
     fread(&toReturn, sizeof(u1), 1, fp);
@@ -26,8 +33,13 @@ Lê 2 bytes do arquivo .class, considera a máquina littleendian.
 
 u2 LeClasse::readU2(FILE *fp) {
     u2 toReturn = 0;
-    for (int i = 0; i < 2; i++) {
-        toReturn += readU1(fp) << (8 - 8*i);
+
+    if (testEndian()) {
+        for (int i = 0; i < 2; i++) {
+            toReturn += readU1(fp) << (8 - 8*i);
+        }
+    } else {
+        fread(&toReturn, sizeof(u2), 1, fp);
     }
     return toReturn;
 }
@@ -40,9 +52,14 @@ Lê 4 bytes do arquivo .class, considera a máquina littleendian.
 
 u4 LeClasse::readU4(FILE *fp) {
     u4 toReturn = 0;
-    for (int i = 0; i < 4; i++) {
-        toReturn += readU1(fp) << (24 - 8*i);
-    } 
+
+    if (testEndian()) {
+        for (int i = 0; i < 4; i++) {
+            toReturn += readU1(fp) << (24 - 8*i);
+        }
+    } else {
+        fread(&toReturn, sizeof(u4), 1, fp);
+    }
     return toReturn;
 }
 
