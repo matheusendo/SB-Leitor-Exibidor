@@ -3,10 +3,41 @@
 
 #include <iostream>
 #include <vector>
+
+#define RT_BYTE 1
+#define RT_BOOL 2
+#define RT_CHAR 3
+#define RT_SHORT 4
+#define RT_INT 5
+#define RT_FLOAT 6
+#define RT_DOUBLE 7
+#define RT_REFERENCE 8
+#define RT_LONG 9
+
 // Tipos de representação de dados da classe
 typedef uint8_t u1;
 typedef uint16_t u2;
 typedef uint32_t u4;
+
+typedef union element_u {
+	double d;
+	float f;
+	uint32_t i;
+	int32_t is;
+	uint64_t l;
+	int64_t ls;
+	uint16_t s;
+	int16_t ss;
+	uint8_t b;
+	int8_t bs;
+	int* pi;
+} element;
+
+typedef struct typedElement_s {
+	element value;
+	uint8_t type;
+	uint8_t realType;
+} typedElement;
 
 using namespace std;
 
